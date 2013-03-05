@@ -530,17 +530,19 @@ namespace Microsoft.Xna.Framework.Graphics
 
 		public void SetValue (Texture value)
 		{
-            if (this.ParameterType != EffectParameterType.Texture && 
-                this.ParameterType != EffectParameterType.Texture1D &&
-                this.ParameterType != EffectParameterType.Texture2D &&
-                this.ParameterType != EffectParameterType.Texture3D &&
-                this.ParameterType != EffectParameterType.TextureCube) 
-            {
-                throw new InvalidCastException();
-            }
-
+			if(value!=null)//null is acceptvalue in xna and previous version
+			{
+ 		           if (this.ParameterType != EffectParameterType.Texture && 
+                		this.ParameterType != EffectParameterType.Texture1D &&
+                		this.ParameterType != EffectParameterType.Texture2D &&
+                		this.ParameterType != EffectParameterType.Texture3D &&
+                		this.ParameterType != EffectParameterType.TextureCube) 
+            			{
+                			throw new InvalidCastException();
+            			}
+			}
 			Data = value;
-            StateKey = unchecked(NextStateKey++);
+            		StateKey = unchecked(NextStateKey++);
 		}
 
 		public void SetValue (Vector2 value)
