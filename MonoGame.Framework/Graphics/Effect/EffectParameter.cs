@@ -528,33 +528,43 @@ namespace Microsoft.Xna.Framework.Graphics
 			throw new NotImplementedException();
 		}
 
+
 		public void SetValue (Texture value)
 		{
-            if (ParameterClass != EffectParameterClass.Object)
+            if (isValidTextureValue(value)) {
+                Data = value;
+                StateKey = unchecked(NextStateKey++);
+            }
+            else {
                 throw new InvalidCastException();
+            }
+		}
 
-            if (value is Texture2D)
-            {
-                if (    ParameterType != EffectParameterType.Texture1D &&
+        private bool isValidTextureValue(Texture value) {
+            if (value == null) {
+                return true;
+            }
+            if (ParameterClass != EffectParameterClass.Object)
+                return false;
+
+            if (value is Texture2D) {
+                if (ParameterType != EffectParameterType.Texture1D &&
                         ParameterType != EffectParameterType.Texture2D)
-                    throw new InvalidCastException();
+                    return false;
             }
 #if !GLES
-            else if (value is Texture3D)
-            {
+            else if (value is Texture3D) {
                 if (ParameterType != EffectParameterType.Texture3D)
-                    throw new InvalidCastException();                
+                    return false;
             }
 #endif
-            else
-		    {
+            else {
                 if (!(value is TextureCube) || ParameterType != EffectParameterType.TextureCube)
-                    throw new InvalidCastException();                		        
-		    }               
-
-			Data = value;
-            StateKey = unchecked(NextStateKey++);
-		}
+                    return false;
+            }
+            return true;
+        }
+ 
 
 		public void SetValue (Vector2 value)
 		{
